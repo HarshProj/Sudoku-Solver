@@ -91,11 +91,12 @@ function solve(arr, i, j) {
       alert("Hurray You Solved it");
     }
     else{
-      alert("OOps there is some issue with your solution")
+      alert("Oops!! there is some issue with your solution")
     }
   }
   return (
     <>
+     
   <Navbar/>
     <div className="pt-20 pl-10">
      <div className="w-full h-full flex flex-col gap-3 items-center justify-center">
