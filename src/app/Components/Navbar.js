@@ -5,7 +5,7 @@ export const Navbar = () => {
     const [click,setClick]=useState(false)
   return (
     <div className="fixed shadow-lg w-full flex justify-center h-16 items-center ">
-    <h1 className="text-3xl font-semibold text-center mt-5 w-full ">Suduko Solver</h1>
+    <h1 className="text-3xl font-semibold text-center mt-5 w-full ">Sudoku Solver</h1>
     <div className="cursor-pointer relative right-0 hov h-[4.25rem] right-5  flex items-center">
   <Info size={30}  />
   <div className="absolute top-[4.25rem] shadow-lg w-[50vh] pl-2  h-[500px] right-0 max-md:w-[30vh] bg-white onhov"> <h3 className="text-2xl max-md:text-xl font-bold">Instruction:</h3>
