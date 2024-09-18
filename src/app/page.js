@@ -1,101 +1,131 @@
+"use client"
 import Image from "next/image";
-
+import { Navbar } from "./Components/Navbar";
+import { useEffect, useState } from "react";
+const initial=[
+  [-1, 5, -1, 9, -1, -1, -1, -1, -1],
+  [8, -1, -1, -1, 4, -1, 3, -1, 7],
+  [-1, -1, -1, 2, 8, -1, 1, 9, -1],
+  [5, 3, 8, 6, -1, 7, 9, 4, -1],
+  [-1, 2, -1, 3, -1, 1, -1, -1, -1],
+  [1, -1, 9, 8, -1, 4, 6, 2, 3],
+  [9, -1, 7, 4, -1, -1, -1, -1, -1],
+  [-1, 4, 5, -1, -1, -1, 2, -1, 9],
+  [-1, -1, -1, -1, 3, -1, -1, 7, -1]
+]
 export default function Home() {
+  const [indexes,setIndexes]=useState([0,1,2,3,4,5,6,7,8])
+  const [sudo,setSudo]=useState(deepcopy(initial))
+  function deepcopy(arr){
+    return JSON.parse(JSON.stringify(arr));
+  }
+  const handlechange=(e,row,col)=>{
+    const val=parseInt(e.target.value)||-1,grid=deepcopy(sudo);
+    if(val<=9&&val>0||val===-1){
+      grid[row][col]=val;
+    }
+    setSudo(grid);
+  }
+  function check(arr, i, j, val) {
+    for (let x = 0; x < 9; x++) {
+        if (arr[x][j] === val || arr[i][x] === val || arr[3 * Math.floor(i / 3) + Math.floor(x / 3)][3 * Math.floor(j / 3) + (x % 3)] === val) {
+            return false;
+        }
+    }
+    return true;
+}
+function solve(arr, i, j) {
+    if (i === 9) {
+        return true;
+    }
+    if (j === 9) {
+        return solve(arr, i + 1, 0);
+    }
+    if (arr[i][j] !== -1) {
+        return solve(arr, i, j + 1);
+    }
+    for (let k = 1; k <= 9; k++) {
+        if (check(arr, i, j, k)) {
+            arr[i][j] = k;
+            if (solve(arr, i, j + 1)) {
+                return true;
+            }
+            arr[i][j] = -1;
+        }
+    }
+    return false;
+}
+// useEffect(()=>{
+//   localStorage.setItem("sudo",sudo);
+// },[sudo])
+  const solveit=()=>{
+    let grid=deepcopy(sudo);
+   let is=solve(grid, 0, 0);
+    if (is) {
+        setSudo(deepcopy(grid));  // Update the grid if solved
+        alert("Sudoku Solved");
+    } else {
+        alert("Sudoku is unsolvable");
+    }
+  }
+  const resetit=()=>{
+    setSudo(initial);
+  }
+  const checkit=(arr)=>{
+    let grid=deepcopy(sudo);
+    let is=solve(grid, 0, 0);
+    // arr=
+    const solvedSudoku = [
+      [7, 5, 1, 9, 6, 3, 4, 8, 2],
+      [8, 9, 2, 1, 4, 5, 3, 6, 7],
+      [3, 6, 4, 2, 8, 7, 1, 9, 5],
+      [5, 3, 8, 6, 2, 7, 9, 4, 1],
+      [4, 2, 6, 3, 9, 1, 7, 5, 8],
+      [1, 7, 9, 8, 5, 4, 6, 2, 3],
+      [9, 8, 7, 4, 1, 2, 5, 3, 6],
+      [6, 4, 5, 7, 3, 8, 2, 1, 9],
+      [2, 1, 3, 5, 7, 6, 8, 7, 4]
+    ];
+    
+    if(deepcopy(solvedSudoku)===deepcopy(grid)){
+      alert("Hurray You Solved it");
+    }
+    else{
+      alert("OOps there is some issue with your solution")
+    }
+  }
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <>
+  <Navbar/>
+    <div className="pt-20 pl-10">
+     <div className="w-full h-full flex flex-col gap-3 items-center justify-center">
+      <table>
+        <tbody className="border">
+          {
+            indexes.map((row,ind)=>{
+              return( 
+                <tr key={ind} className={(row+1)%3===0?"border-b-2 border-black":""}>
+                  {indexes.map((col,ind2)=>{
+                    return(
+                      <td key={ind+ind2} className={(col+1)%3===0?"border-r-2 border-black":""}>
+                        <input type="text" className="w-[50px] h-[50px] font-medium text-center max-sm:w-[30px] max-sm:h-[30px] border-black border" onChange={(e)=>{handlechange(e,row,col)}} value={sudo[row][col]==-1?"":sudo[row][col]}/>
+                      </td>
+                    )
+                  })}
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+      <div className="">
+        <button className="cursor-pointer p-4 border rounded-md shadow-md bg-emerald-300" onClick={solveit}>Solve</button>
+        <button className="cursor-pointer p-4 border rounded-md shadow-md bg-emerald-300" onClick={resetit}>Reset</button>
+        <button className="cursor-pointer p-4 border rounded-md shadow-md bg-emerald-300" onClick={()=>{checkit(sudo)}}>check</button>
+      </div>
+     </div>
     </div>
+      
+    </>
   );
 }
