@@ -74,25 +74,28 @@ function solve(arr, i, j) {
   const checkit=(arr)=>{
     let grid=deepcopy(sudo);
     let is=solve(grid, 0, 0);
-    // arr=
-    const solvedSudoku = [
-      [7, 5, 1, 9, 6, 3, 4, 8, 2],
-      [8, 9, 2, 1, 4, 5, 3, 6, 7],
-      [3, 6, 4, 2, 8, 7, 1, 9, 5],
-      [5, 3, 8, 6, 2, 7, 9, 4, 1],
-      [4, 2, 6, 3, 9, 1, 7, 5, 8],
-      [1, 7, 9, 8, 5, 4, 6, 2, 3],
-      [9, 8, 7, 4, 1, 2, 5, 3, 6],
-      [6, 4, 5, 7, 3, 8, 2, 1, 9],
-      [2, 1, 3, 5, 7, 6, 8, 7, 4]
-    ];
-    
-    if(deepcopy(solvedSudoku)===deepcopy(grid)){
-      alert("Hurray You Solved it");
-    }
-    else{
-      alert("Oops!! there is some issue with your solution")
-    }
+    console.log(grid,arr);
+    if (is) {
+      const arraysAreEqual = (arr1, arr2) => {
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (arr1[i][j] !== arr2[i][j]) {
+                    return false; 
+                }
+            }
+        }
+        return true;
+    };
+  
+    if (arraysAreEqual(grid, arr)) {
+        alert("Hurray! You Solved it");
+    } else {
+        alert("Oops!! There is some issue with your solution");
+    } 
+  } else {
+      alert("Sudoku is unsolvable");
+  }
+  
   }
   return (
     <>
