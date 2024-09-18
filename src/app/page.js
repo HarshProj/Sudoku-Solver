@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { Navbar } from "./Components/Navbar";
 import { useEffect, useState } from "react";
+
+import {FireSimple} from "@phosphor-icons/react";
 const initial=[
   [-1, 5, -1, 9, -1, -1, -1, -1, -1],
   [8, -1, -1, -1, 4, -1, 3, -1, 7],
@@ -103,6 +105,8 @@ function solve(arr, i, j) {
   <Navbar/>
     <div className="pt-20 pl-10">
      <div className="w-full h-full flex flex-col gap-3 items-center justify-center">
+      <h2 className="text-xl max-sm:text-sm">
+      <FireSimple size={20} weight="fill"  className="inline" />You can Enter Your Own sudoku to find the solution of it!!<FireSimple size={20} className="inline" weight="fill"/></h2>
       <table>
         <tbody className="border">
           {
