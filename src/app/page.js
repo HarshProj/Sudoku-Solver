@@ -112,10 +112,10 @@ function solve(arr, i, j) {
           {
             indexes.map((row,ind)=>{
               return( 
-                <tr key={ind} className={(row+1)%3===0?"border-b-2 border-black":""}>
+                <tr key={ind} className={(row+1)%3===0&row!=8?"border-b-2 border-black":""}>
                   {indexes.map((col,ind2)=>{
                     return(
-                      <td key={ind+ind2} className={(col+1)%3===0?"border-r-2 border-black":""}>
+                      <td key={ind+ind2} className={(col+1)%3===0&&col!=8?"border-r-2 border-black":""}>
                         <input type="text" className="w-[50px] h-[50px] font-medium text-center max-sm:w-[30px] max-sm:h-[30px] border-black border" onChange={(e)=>{handlechange(e,row,col)}} value={sudo[row][col]==-1?"":sudo[row][col]}/>
                       </td>
                     )
